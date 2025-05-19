@@ -39,7 +39,7 @@ mvn clean install
 ```
 Run the app:
 ```bash
-java -cp target/simple-maven-app-1.0-SNAPSHOT.jar com.example.App
+java -cp target/simple-maven-app-1.0-SNAPSHOT.jar org.example.App
 ```
 🧪 Testing
 To run unit tests:
@@ -59,6 +59,7 @@ A sample Jenkins pipeline (Jenkinsfile) is included. The pipeline:
 - Packages the application
 
 Example Jenkins Pipeline
+```bash
 pipeline {
     agent any
 
@@ -97,7 +98,7 @@ pipeline {
         }
     }
 }
-
+```
 
 📬 Contact
 Created by Satya – feel free to reach out!
