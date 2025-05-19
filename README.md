@@ -63,10 +63,15 @@ Example Jenkins Pipeline
 pipeline {
     agent any
 
+    environment {
+        SLACK_CHANNEL = '#ci-cd' // Replace it with your Slack channel
+        SLACK_CREDENTIALS_ID = 'slack-cred' // From Jenkins credential manager
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/your-username/simple-maven-app.git'
+                git branch: 'main', url: 'https://github.com/satyadipon/simple-maven-app.git'
             }
         }
 
@@ -91,10 +96,21 @@ pipeline {
 
     post {
         success {
-            echo 'Build and tests succeeded!'
+            slackSend(
+                channel: env.SLACK_CHANNEL,
+                color: 'good',
+                message: "✅ Job '${env.JOB_NAME}' [#${env.BUILD_NUMBER}] succeeded. 🎉\n${env.BUILD_URL}"
+            )
         }
         failure {
-            echo 'Build or tests failed!'
+            slackSend(
+                channel: env.SLACK_CHANNEL,
+                color: 'danger',
+                message: "❌ Job '${env.JOB_NAME}' [#${env.BUILD_NUMBER}] failed. 🔥\n${env.BUILD_URL}"
+            )
+        }
+        always {
+            echo 'Pipeline finished.'
         }
     }
 }
